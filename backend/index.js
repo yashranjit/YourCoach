@@ -1,14 +1,13 @@
-require("dotenv").config();
+import "dotenv/config";
 
-const { PORT, dbURL } = require("./src/config/processEnv");
+import { PORT, dbURL } from "./src/config/processEnv.js";
+import mongoose from "mongoose";
+import express from "express";
+import cors from "cors";
+import { authRouter } from "./src/routes/authRoutes.js";
 
-const mongoose = require("mongoose");
-const express = require("express");
 const app = express();
 const port = PORT;
-const cors = require("cors");
-const { authRouter } = require("./src/routes/authRoutes");
-
 app.use(express.json());
 app.use(cors());
 app.use("/api/v1/auth", authRouter);

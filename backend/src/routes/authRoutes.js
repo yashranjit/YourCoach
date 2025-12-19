@@ -1,11 +1,11 @@
-const express = require("express");
+import express from "express";
+
+import bcrypt from "bcrypt";
+import { jwtSecret } from "../config/processEnv.js";
+import jwt from "jsonwebtoken";
+import { signUpSchema } from "../validators/authSchema.js";
+import { UserModel } from "../models/User.js";
 const authRouter = express.Router();
-const z = require("zod");
-const bcrypt = require("bcrypt");
-const { jwtSecret } = require("../config/processEnv");
-const jwt = require("jsonwebtoken");
-const { signUpSchema } = require("../validators/authSchema");
-const { UserModel } = require("../models/User");
 
 authRouter.post("/sign-up", async (req, res) => {
   const parsedData = signUpSchema.safeParse(req.body);
@@ -17,11 +17,11 @@ authRouter.post("/sign-up", async (req, res) => {
   }
   const { fullname, email, password } = parsedData.data;
   try {
-    const hasshedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     await UserModel.create({
       fullname,
       email,
-      password: hasshedPassword,
+      password: hashedPassword,
     });
     res.json({ message: "You have signed up! Please proceed to sign in." });
   } catch (err) {
@@ -49,10 +49,8 @@ authRouter.post("/sign-in", async (req, res) => {
     });
     return res.json({ token });
   } else {
-    return res.json({ message: "Invalid credentials" });
+    return res.status(403).json({ message: "Invalid credentials" });
   }
 });
 
-module.exports = {
-  authRouter,
-};
+export { authRouter };

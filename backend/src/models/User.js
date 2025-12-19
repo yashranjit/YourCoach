@@ -1,6 +1,5 @@
 // this User.js will have the schema for storing user data
-
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const UserSchema = mongoose.Schema(
   {
@@ -33,11 +32,9 @@ const UserSchema = mongoose.Schema(
       },
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const UserModel = mongoose.model("User", UserSchema);
 
-module.exports = {
-  UserModel,
-};
+export { UserModel };
