@@ -9,21 +9,21 @@ const signUp = async (req, res) => {
     return res
       .status(411)
       .json({ message: "Incorrect Format", error: parsedData.error });
-    const { fullname, email, password } = parsedData.data;
-    try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      await UserModel.create({
-        fullname,
-        email,
-        password: hashedPassword,
-      });
-      res.json({ message: "You have signed up! Please proceed to sign in." });
-    } catch (err) {
-      if (err.code === 11000) {
-        res.status(409).json({ message: "User already exists." });
-      } else {
-        res.status(500).json({ message: "Internal Server Error" });
-      }
+  }
+  const { fullname, email, password } = parsedData.data;
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await UserModel.create({
+      fullname,
+      email,
+      password: hashedPassword,
+    });
+    res.json({ message: "You have signed up! Please proceed to sign in." });
+  } catch (err) {
+    if (err.code === 11000) {
+      res.status(409).json({ message: "User already exists." });
+    } else {
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 };

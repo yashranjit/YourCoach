@@ -5,12 +5,14 @@ import mongoose from "mongoose";
 import express from "express";
 import cors from "cors";
 import { authRouter } from "./src/routes/authRoutes.js";
+import { sessionRouter } from "./src/routes/sessionRoutes.js";
 
 const app = express();
 const port = PORT;
 app.use(express.json());
 app.use(cors());
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/session", sessionRouter);
 
 async function main() {
   try {
